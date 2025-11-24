@@ -1,98 +1,61 @@
-# Banker's Algorithm Implementation
+# Banker's Algorithm Project
 
-## Overview
-This project implements the Banker's Algorithm for deadlock avoidance in operating systems. The algorithm determines whether a system is in a safe state and finds a safe sequence of process execution if one exists.
+## Program Description
 
-## Algorithm Explanation
-The Banker's Algorithm works as follows:
+This program implements the Banker's Algorithm (Deadlock Avoidance) in C++. It reads a snapshot of a system (processes and resources) from a file and determines if the system is in a "Safe State."
 
-1. **Input**: 
-   - Number of processes and resource types
-   - Allocation matrix (resources currently allocated to each process)
-   - Max matrix (maximum resources each process may need)
-   - Available resources (resources currently available)
+**How it works:**
 
-2. **Need Calculation**: Need = Max - Allocation
+1. **Input:** The program reads the `Allocation`, `Max`, and `Available` matrices from `input.txt`.
 
-3. **Safety Check**:
-   - Find a process whose Need ≤ Available
-   - If found, assume the process finishes and returns all its resources
-   - Repeat until all processes are finished (safe state) or no such process exists (unsafe state)
+2. **Calculation:** It computes the `Need` matrix for each process using the formula: `Need = Max - Allocation`.
 
-## Problem Solution
-For the given system snapshot with 5 processes (P0-P4) and 3 resource types (A, B, C):
+3. **Safety Check:** - It iterates through the processes to find one whose `Need` is less than or equal to the currently `Available` resources (Work).
 
-- **Total Resources**: A=10, B=5, C=7
-- **Allocation Matrix**:
-  - P0: [0, 1, 0]
-  - P1: [2, 0, 0]
-  - P2: [3, 0, 2]
-  - P3: [2, 2, 1]
-  - P4: [0, 0, 2]
-- **Max Matrix**:
-  - P0: [7, 5, 3]
-  - P1: [3, 3, 2]
-  - P2: [9, 0, 2]
-  - P3: [2, 2, 2]
-  - P4: [4, 3, 3]
-- **Available**: [3, 2, 2]
+   - If found, the process is assumed to execute, finish, and release its allocated resources back to the pool.
+   - This process repeats until all processes are marked as finished (Safe) or no process can execute (Unsafe).
 
-**Result**: The system is in a **SAFE** state with safe sequence: **P3 → P1 → P0 → P2 → P4**
+**Assignment Conclusion:**
 
-## Project Structure
+Based on the provided snapshot, **Yes**, the system is in a safe state. The calculated safe sequence is shown in the results below.
 
-OS_BankersAlgorithm_Project
+## Usage Instructions
 
-- banker.cpp          # Main implementation
-- input.txt           # Input data file
-- README.md           # This file
-- Makefile            # Build configuration
-- output_example.txt  # Example output
+### 1. Requirements
 
+- Linux/Unix Operating System
+- G++ Compiler
 
-## Compilation and Execution
+### 2. Compilation
 
-### Prerequisites
-- GCC compiler
-- Linux/Unix environment
+To compile the source code, open a terminal in the project directory and run:
 
-### Steps to Run
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd OS_BankersAlgorithm_Project
-
-2. Compile the program:
-   ```bash
-   make
-
-3. Run the program:
     ```bash
-    make run
+    g++ banker.cpp -o banker
 
-## Input File Format
+### Execution
 
-The input file input/system_state.txt follows this format:
+Ensure that input.txt is present in the same directory, then run:
 
-- Line 1: Number of processes, Number of resource types
+    ```bash
+    ./banker
 
-- Line 2: Total instances of each resource type
+### 4. Input File Format
 
-- Next n lines: For each process: Allocation values + Max values
+The input.txt file uses the following structure:
 
-- Last line: Currently available resources
+- Line 1: Number of Processes
 
+- Line 2: Number of Resources
 
-## Features
+- Line 3: Available Resources
 
-1. Reads system state from input file
+- Next 5 Lines: Allocation Matrix
 
-2. Calculates Need matrix automatically
+- Next 5 Lines: Max Matrix
 
-3. Implements complete Bankers Algorithm safety check
+### Example Results
 
-4. Outputs detailed system state information
-
-5. Provides clear safe sequence or unsafe state warning
-
-6. Robust error handling for file operations
+Terminal Output: 
+    The system is in a safe state. 
+    Safe Sequence is: P3 -> P1 -> P0 -> P2 -> P4

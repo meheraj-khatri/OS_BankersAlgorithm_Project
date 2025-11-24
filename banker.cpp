@@ -1,186 +1,97 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <string>
 
 using namespace std;
 
-class BankersAlgorithm {
-private:
-    int num_processes;
-    int num_resources;
-    vector<vector<int>> allocation;
-    vector<vector<int>> max;
-    vector<vector<int>> need;
-    vector<int> available;
-    vector<int> total_resources;
-
-public:
-    BankersAlgorithm(const string& filename) {
-        ifstream file(filename);
-        if (!file.is_open()) {
-            cerr << "Error: Could not open input file!" << endl;
-            exit(1);
-        }
-
-        // Read number of processes and resources
-        file >> num_processes >> num_resources;
-
-        // Read total resources
-        total_resources.resize(num_resources);
-        for (int i = 0; i < num_resources; i++) {
-            file >> total_resources[i];
-        }
-
-        // Initialize matrices
-        allocation.resize(num_processes, vector<int>(num_resources));
-        max.resize(num_processes, vector<int>(num_resources));
-        need.resize(num_processes, vector<int>(num_resources));
-        available.resize(num_resources);
-
-        // Read allocation and max for each process
-        for (int i = 0; i < num_processes; i++) {
-            for (int j = 0; j < num_resources; j++) {
-                file >> allocation[i][j];
-            }
-            for (int j = 0; j < num_resources; j++) {
-                file >> max[i][j];
-            }
-        }
-
-        // Read available resources
-        for (int i = 0; i < num_resources; i++) {
-            file >> available[i];
-        }
-
-        file.close();
-
-        // Calculate need matrix
-        calculateNeed();
+int main() {
+    // 1. Open the input file
+    ifstream inputFile("input.txt");
+    if (!inputFile.is_open()) {
+        cerr << "Error: Could not open input.txt" << endl;
+        return 1;
     }
 
-    void calculateNeed() {
-        for (int i = 0; i < num_processes; i++) {
-            for (int j = 0; j < num_resources; j++) {
-                need[i][j] = max[i][j] - allocation[i][j];
-            }
+    int n, m; // n = processes, m = resources
+    inputFile >> n >> m;
+
+    // Vectors to store the matrices
+    vector<int> available(m);
+    vector<vector<int>> allocation(n, vector<int>(m));
+    vector<vector<int>> max(n, vector<int>(m));
+    vector<vector<int>> need(n, vector<int>(m));
+
+    // 2. Read Available Resources
+    for (int i = 0; i < m; i++) {
+        inputFile >> available[i];
+    }
+
+    // 3. Read Allocation Matrix
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            inputFile >> allocation[i][j];
         }
     }
 
-    bool isSafeSequence(vector<int>& safe_sequence) {
-        vector<int> work = available;
-        vector<bool> finish(num_processes, false);
-        safe_sequence.clear();
+    // 4. Read Max Matrix and Calculate Need
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            inputFile >> max[i][j];
+            // Calculation: Need = Max - Allocation
+            need[i][j] = max[i][j] - allocation[i][j];
+        }
+    }
+    inputFile.close();
 
-        bool found;
-        do {
-            found = false;
-            for (int i = 0; i < num_processes; i++) {
-                if (!finish[i]) {
-                    bool can_allocate = true;
-                    for (int j = 0; j < num_resources; j++) {
-                        if (need[i][j] > work[j]) {
-                            can_allocate = false;
-                            break;
-                        }
-                    }
+    // 5. Banker's Algorithm Implementation
+    vector<int> f(n, 0); // Finish flags (0=false, 1=true)
+    vector<int> ans(n, 0); // Stores the safe sequence
+    int ind = 0; 
+    
+    // Work vector is initialized to Available
+    vector<int> work = available; 
 
-                    if (can_allocate) {
-                        // Process can be allocated resources
-                        for (int j = 0; j < num_resources; j++) {
-                            work[j] += allocation[i][j];
-                        }
-                        finish[i] = true;
-                        safe_sequence.push_back(i);
-                        found = true;
+    // Loop until all processes are finished or deadlock occurs
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            if (f[i] == 0) { // If process is not finished
+                int flag = 0;
+                
+                // Check if Need <= Work for all resources
+                for (int j = 0; j < m; j++) {
+                    if (need[i][j] > work[j]) {
+                        flag = 1; // Cannot execute, need is too high
+                        break;
                     }
                 }
-            }
-        } while (found);
 
-        // Check if all processes finished
-        for (int i = 0; i < num_processes; i++) {
-            if (!finish[i]) {
-                return false;
+                if (flag == 0) { // Safe to execute
+                    ans[ind++] = i;
+                    for (int y = 0; y < m; y++) {
+                        work[y] += allocation[i][y]; // Release resources
+                    }
+                    f[i] = 1; // Mark as finished
+                }
             }
         }
-        return true;
     }
 
-    void printState() {
-        cout << "Banker's Algorithm - System State" << endl;
-        cout << "=================================" << endl;
-        cout << "Number of processes: " << num_processes << endl;
-        cout << "Number of resource types: " << num_resources << endl;
-        
-        cout << "\nTotal resources: ";
-        for (int res : total_resources) {
-            cout << res << " ";
+    // 6. Output Result
+    bool safe = true;
+    for(int i=0; i<n; i++) {
+        if(f[i] == 0) {
+            safe = false;
+            cout << "The system is NOT in a safe state." << endl;
+            break;
         }
-        cout << endl;
-
-        cout << "\nCurrent Allocation Matrix:" << endl;
-        cout << "Process\tAllocation (ABC)" << endl;
-        for (int i = 0; i < num_processes; i++) {
-            cout << "P" << i << "\t";
-            for (int j = 0; j < num_resources; j++) {
-                cout << allocation[i][j] << " ";
-            }
-            cout << endl;
-        }
-
-        cout << "\nMax Matrix:" << endl;
-        cout << "Process\tMax (ABC)" << endl;
-        for (int i = 0; i < num_processes; i++) {
-            cout << "P" << i << "\t";
-            for (int j = 0; j < num_resources; j++) {
-                cout << max[i][j] << " ";
-            }
-            cout << endl;
-        }
-
-        cout << "\nNeed Matrix (Max - Allocation):" << endl;
-        cout << "Process\tNeed (ABC)" << endl;
-        for (int i = 0; i < num_processes; i++) {
-            cout << "P" << i << "\t";
-            for (int j = 0; j < num_resources; j++) {
-                cout << need[i][j] << " ";
-            }
-            cout << endl;
-        }
-
-        cout << "\nAvailable resources: ";
-        for (int res : available) {
-            cout << res << " ";
-        }
-        cout << endl;
     }
-};
 
-int main() {
-    cout << "Banker's Algorithm Implementation" << endl;
-    cout << "=================================" << endl;
-
-    BankersAlgorithm banker("input/system_state.txt");
-    banker.printState();
-
-    vector<int> safe_sequence;
-    bool is_safe = banker.isSafeSequence(safe_sequence);
-
-    cout << "\nSafety Check Results:" << endl;
-    cout << "====================" << endl;
-    if (is_safe) {
-        cout << "✓ System is in a SAFE state!" << endl;
-        cout << "Safe sequence: ";
-        for (size_t i = 0; i < safe_sequence.size(); i++) {
-            cout << "P" << safe_sequence[i];
-            if (i != safe_sequence.size() - 1) {
-                cout << " → ";
-            }
-        }
-        cout << endl;
-    } else {
-        cout << "✗ System is in an UNSAFE state! Deadlock may occur." << endl;
+    if(safe) {
+        cout << "The system is in a safe state." << endl;
+        cout << "Safe Sequence is: ";
+        for (int i = 0; i < n - 1; i++)
+            cout << "P" << ans[i] << " -> ";
+        cout << "P" << ans[n - 1] << endl;
     }
 
     return 0;
