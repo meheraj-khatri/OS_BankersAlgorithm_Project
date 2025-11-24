@@ -69,11 +69,6 @@ OS_BankersAlgorithm_Project
 3. Run the program:
     ```bash
     make run
-    
-OR
-   ```bash
-   ./banker
-
 
 ## Input File Format
 
