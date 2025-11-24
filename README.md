@@ -30,15 +30,15 @@ Based on the provided snapshot, **Yes**, the system is in a safe state. The calc
 
 To compile the source code, open a terminal in the project directory and run:
 
-    ```bash
     g++ banker.cpp -o banker
+    
 
 ### Execution
 
 Ensure that input.txt is present in the same directory, then run:
 
-    ```bash
     ./banker
+
 
 ### 4. Input File Format
 
