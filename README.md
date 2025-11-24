@@ -70,7 +70,35 @@ OS_BankersAlgorithm_Project
     ```bash
     make run
     
-    or
+or
 
     ```bash
     ./banker
+
+## Input File Format
+
+The input file input/system_state.txt follows this format:
+
+- Line 1: Number of processes, Number of resource types
+
+- Line 2: Total instances of each resource type
+
+- Next n lines: For each process: Allocation values + Max values
+
+- Last line: Currently available resources
+
+
+## Features
+
+1. Reads system state from input file
+
+2. Calculates Need matrix automatically
+
+3. Implements complete Banker's Algorithm safety check
+
+4. Outputs detailed system state information
+
+5. Provides clear safe sequence or unsafe state warning
+
+6. Robust error handling for file operations
+
