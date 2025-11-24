@@ -41,12 +41,13 @@ For the given system snapshot with 5 processes (P0-P4) and 3 resource types (A, 
 
 ## Project Structure
 
-OS_BANKERSALGORITHM_PROJECT
-├── banker.cpp # Main implementation
-├── input.txt # Input data file
-├── README.md # This file
-├── Makefile # Build configuration
-└── output_example.txt # Example output
+OS_BankersAlgorithm_Project
+
+├── banker.cpp          # Main implementation
+├── input.txt           # Input data file
+├── README.md           # This file
+├── Makefile            # Build configuration
+└── output_example.txt  # Example output
 
 
 ## Compilation and Execution
@@ -59,7 +60,7 @@ OS_BANKERSALGORITHM_PROJECT
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd bankers_algorithm
+   cd OS_BankersAlgorithm_Project
 
 2. Compile the program:
    ```bash
