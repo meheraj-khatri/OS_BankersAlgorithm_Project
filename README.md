@@ -31,7 +31,7 @@ Based on the provided snapshot, **Yes**, the system is in a safe state. The calc
 To compile the source code, open a terminal in the project directory and run:
 
     g++ banker.cpp -o banker
-    
+
 
 ### Execution
 
@@ -57,5 +57,5 @@ The input.txt file uses the following structure:
 ### Example Results
 
 Terminal Output: 
-    The system is in a safe state. 
-    Safe Sequence is: P3 -> P1 -> P0 -> P2 -> P4
+
+![alt text](image.png)
