@@ -74,6 +74,7 @@ OR
    ```bash
    ./banker
 
+
 ## Input File Format
 
 The input file input/system_state.txt follows this format:
