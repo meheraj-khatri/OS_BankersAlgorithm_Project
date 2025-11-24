@@ -73,11 +73,6 @@ Failure:
 
 For input.txt:
 
-1
-1 3 6
-2 6 8
-2 7 9
-1 6 
-3 6
+![alt text](image-2.png)
 
 ![alt text](image-1.png)
