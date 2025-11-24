@@ -71,9 +71,8 @@ OS_BankersAlgorithm_Project
     make run
     
 or
-
-    ```bash
-    ./banker
+        ```bash
+        ./banker
 
 ## Input File Format
 
