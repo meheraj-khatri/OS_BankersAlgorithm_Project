@@ -70,9 +70,9 @@ OS_BankersAlgorithm_Project
     ```bash
     make run
     
-or
-        ```bash
-        ./banker
+OR
+   ```bash
+   ./banker
 
 ## Input File Format
 
@@ -93,11 +93,10 @@ The input file input/system_state.txt follows this format:
 
 2. Calculates Need matrix automatically
 
-3. Implements complete Banker's Algorithm safety check
+3. Implements complete Bankers Algorithm safety check
 
 4. Outputs detailed system state information
 
 5. Provides clear safe sequence or unsafe state warning
 
 6. Robust error handling for file operations
-
