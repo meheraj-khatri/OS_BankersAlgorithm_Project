@@ -43,11 +43,11 @@ For the given system snapshot with 5 processes (P0-P4) and 3 resource types (A, 
 
 OS_BankersAlgorithm_Project
 
-├── banker.cpp          # Main implementation
-├── input.txt           # Input data file
-├── README.md           # This file
-├── Makefile            # Build configuration
-└── output_example.txt  # Example output
+- banker.cpp          # Main implementation
+- input.txt           # Input data file
+- README.md           # This file
+- Makefile            # Build configuration
+- output_example.txt  # Example output
 
 
 ## Compilation and Execution
