@@ -26,8 +26,13 @@ Please download both `banker.cpp` and `input.txt` into the same folder. Ensure t
 
 ### Input Setup
 Feel free to edit the `input.txt` file with whatever values you feel fit. The program works on dynamic resource instance sizes. Ensure you separate values with a space (` `). 
+The `input.txt` file uses the following structure:
 
-You will need to input the current **Allocated** memory, followed by the **Max** memory for each program.
+- **Line 1:** Number of Processes (n)
+- **Line 2:** Number of Resources (m)
+- **Line 3:** Available Resources (m integers)
+- **Next n Lines:** Allocation Matrix (n lines of m integers)
+- **Next n Lines:** Max Matrix (n lines of m integers)
 
 ## Usage Instructions
 
